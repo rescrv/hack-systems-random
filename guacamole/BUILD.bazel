@@ -1,0 +1,40 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+# gazelle:exclude guacamole.c
+# gazelle:exclude guacamole_amd64.s
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "guacamole.go",
+        "guacamole.h",
+    ],
+    cdeps = [
+        ":guacamole_library",
+    ],
+    cgo = True,
+    importpath = "hack.systems/random/guacamole",
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "guacamole_library",
+    srcs = [
+        "guacamole.c",
+        "guacamole.h",
+    ] + select({
+        "@io_bazel_rules_go//go/platform:amd64": [
+            "guacamole_amd64.s",
+        ],
+        "//conditions:default": [],
+    }),
+)
+
+go_test(
+    name = "go_default_xtest",
+    srcs = ["guacamole_test.go"],
+    deps = [
+        ":go_default_library",
+        "@com_github_stretchr_testify//require:go_default_library",
+    ],
+)

@@ -1,0 +1,22 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "go_default_library",
+    srcs = ["armnod.go"],
+    cdeps = [
+        ":guacamole_library",
+    ],
+    importpath = "hack.systems/random/armnod",
+    visibility = ["//visibility:public"],
+    deps = ["//guacamole:go_default_library"],
+)
+
+go_test(
+    name = "go_default_xtest",
+    srcs = ["armnod_test.go"],
+    deps = [
+        ":go_default_library",
+        "//guacamole:go_default_library",
+        "@com_github_stretchr_testify//require:go_default_library",
+    ],
+)
