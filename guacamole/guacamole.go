@@ -158,7 +158,7 @@ type Scrambler struct {
 }
 
 // Create a new scrambler and initialize it with Change(0)
-func Scrambler() *Scrambler {
+func NewScrambler() *Scrambler {
 	s := &Scrambler{}
 	s.Change(0)
 	return s

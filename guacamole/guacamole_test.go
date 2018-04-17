@@ -115,7 +115,7 @@ func TestZipf(t *testing.T) {
 func TestScrambler(t *testing.T) {
 	require := require.New(t)
 
-	s := guacamole.Scrambler()
+	s := guacamole.NewScrambler()
 
 	require.Equal(uint64(0x4ef997456198dd78), s.Scramble(0))
 	require.Equal(uint64(0x64ed065757511fa7), s.Scramble(1))
@@ -176,7 +176,7 @@ func BenchmarkZipfTheta_1e9_05(b *testing.B) { benchmarkZipfTheta(1000, 0.1, b) 
 func BenchmarkZipfTheta_1e9_09(b *testing.B) { benchmarkZipfTheta(1000, 0.1, b) }
 
 func BenchmarkScramblerChange(b *testing.B) {
-	s := guacamole.Scrambler()
+	s := guacamole.NewScrambler()
 	for n := 0; n < b.N; n++ {
 		s.Change(uint64(n))
 	}
@@ -184,7 +184,7 @@ func BenchmarkScramblerChange(b *testing.B) {
 }
 
 func BenchmarkScramblerScramble(b *testing.B) {
-	s := guacamole.Scrambler()
+	s := guacamole.NewScrambler()
 	sum := uint64(0)
 	for n := 0; n < b.N; n++ {
 		sum += s.Scramble(uint64(n))
