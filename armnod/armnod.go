@@ -287,7 +287,9 @@ type initFixedStringChooser struct {
 
 func (c *initFixedStringChooser) NextArmnodString(g *guacamole.Guacamole) (uint64, bool) {
 	if c.idx < c.limit {
-		return distribute(c.idx, c.N), true
+		x, done := distribute(c.idx, c.N), true
+		c.idx++
+		return x, done
 	}
 	return 0, false
 }
