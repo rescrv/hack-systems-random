@@ -31,6 +31,7 @@
 // opportunities for puns about "bytes of guacamole".
 package guacamole
 
+// #cgo LDFLAGS: -lm
 // #include <errno.h>
 // #include <stdlib.h>
 // #include "guacamole.h"
