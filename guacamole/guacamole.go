@@ -126,6 +126,16 @@ func (z *ZipfParams) N() uint64 {
 	return uint64(z.gzp.n)
 }
 
+func (z *ZipfParams) Dump() (N uint64, alpha, theta, zetan, zeta2, eta float64) {
+	N = uint64(z.gzp.n)
+	alpha = float64(z.gzp.alpha)
+	theta = float64(z.gzp.theta)
+	zetan = float64(z.gzp.zetan)
+	zeta2 = float64(z.gzp.zeta2)
+	eta = float64(z.gzp.eta)
+	return
+}
+
 // ZipfAlpha returns ZipfParams to draw from n elements with the provided alpha
 // parameter.
 func ZipfAlpha(n uint64, alpha float64) *ZipfParams {

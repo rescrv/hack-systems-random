@@ -13,6 +13,7 @@ go_library(
         ":guacamole_library",
     ],
     cgo = True,
+    clinkopts = ["-lm"],
     importpath = "hack.systems/random/guacamole",
     visibility = ["//visibility:public"],
 )
