@@ -1,0 +1,15 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = ["guacamole_generate.go"],
+    importpath = "hack.systems/random/guacamole/guacamole_generate",
+    visibility = ["//visibility:private"],
+    deps = ["//guacamole:go_default_library"],
+)
+
+go_binary(
+    name = "guacamole_generate",
+    embed = [":go_default_library"],
+    visibility = ["//visibility:public"],
+)

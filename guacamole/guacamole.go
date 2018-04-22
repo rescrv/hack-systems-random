@@ -42,6 +42,14 @@ import (
 	"unsafe"
 )
 
+const (
+	// Guacamole internally generates 64 bytes at a time.  Adjacent seeds will
+	// produce data that is exactly BlockSize bytes offset in the stream.  In
+	// general, two seeds i and j will be exactly (i - j)*64 bytes offset in
+	// their respective streams.
+	BlockSize = 64
+)
+
 func init() {
 	MaybeEnableAssembly()
 }
