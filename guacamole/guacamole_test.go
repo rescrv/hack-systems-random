@@ -191,3 +191,11 @@ func BenchmarkScramblerScramble(b *testing.B) {
 	}
 	result = sum
 }
+
+func BenchmarkScramblerStrawMan(b *testing.B) {
+	sum := uint64(0)
+	for n := 0; n < b.N; n++ {
+		sum += (uint64(n) * result) % 18446744073709551557
+	}
+	result = sum
+}
