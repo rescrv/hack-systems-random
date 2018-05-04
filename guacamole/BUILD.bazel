@@ -32,10 +32,8 @@ cc_library(
 )
 
 go_test(
-    name = "go_default_xtest",
+    name = "go_default_test",
     srcs = ["guacamole_test.go"],
-    deps = [
-        ":go_default_library",
-        "@com_github_stretchr_testify//require:go_default_library",
-    ],
+    embed = [":go_default_library"],
+    deps = ["@com_github_stretchr_testify//require:go_default_library"],
 )
