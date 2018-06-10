@@ -91,6 +91,18 @@ func (g *Guacamole) Seed(s uint64) {
 	C.guacamole_seed(&g.guac, C.uint64_t(s))
 }
 
+// Given a seed, seek to the given byte offset in the stream. Like seed, seek is fast and safe to
+// call frequently
+func (g *Guacamole) Seek(s, offset uint64) {
+	s = s + offset/BlockSize
+	g.Seed(s)
+
+	remainder := offset % BlockSize
+	if remainder > 0 {
+		_ = g.Bytes(remainder)
+	}
+}
+
 // String constructs a string of the next sz random bytes of guacamole.
 func (g *Guacamole) String(sz uint64) string {
 	return string(g.Bytes(sz))

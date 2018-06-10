@@ -1,6 +1,7 @@
 package guacamole_test
 
 import (
+	"math"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -14,36 +15,20 @@ const (
 )
 
 func TestGuacamoleC(t *testing.T) {
-	require := require.New(t)
-	g := guacamole.New()
-	require.NotNil(g)
-
 	guacamole.DisableAssembly()
-
-	g.Seed(0)
-	s := g.String(8)
-	require.Equal(First8Bytes, s)
-
-	g.Seed(0)
-	b := g.Bytes(8)
-	require.Equal([]byte(First8Bytes), b)
-
-	b = make([]byte, 8)
-	require.NotEqual([]byte(First8Bytes), b)
-	g.Seed(0)
-	g.Fill(b)
-	require.Equal([]byte(First8Bytes), b)
-
-	g.Seed(0)
-	require.InEpsilon(FirstDouble, g.Float64(), 0.001)
+	testGuacamole(t)
 }
 
 func TestGuacamoleAssembly(t *testing.T) {
+	guacamole.MaybeEnableAssembly()
+	defer guacamole.DisableAssembly()
+	testGuacamole(t)
+}
+
+func testGuacamole(t *testing.T) {
 	require := require.New(t)
 	g := guacamole.New()
 	require.NotNil(g)
-
-	guacamole.MaybeEnableAssembly()
 
 	g.Seed(0)
 	s := g.String(8)
@@ -61,6 +46,27 @@ func TestGuacamoleAssembly(t *testing.T) {
 
 	g.Seed(0)
 	require.InEpsilon(FirstDouble, g.Float64(), 0.001)
+
+	next8Bytes := g.Bytes(8)
+	g.Seek(0, 8)
+	b = make([]byte, 8)
+	require.NotEqual(next8Bytes, b)
+	g.Fill(b)
+	require.Equal(next8Bytes, b)
+
+	seekG := guacamole.New()
+	require.NotNil(g)
+	seekG.Seed(1337)
+	for i := 0; i < 100; i++ {
+		g.Seed(math.MaxUint64)
+		bytesRead := seekG.Uint64()%1024 + 1
+		_ = g.Bytes(bytesRead)
+		nextInt := g.Uint64()
+
+		g.Seek(math.MaxUint64, bytesRead)
+		seekNextInt := g.Uint64()
+		require.Equal(nextInt, seekNextInt)
+	}
 }
 
 func TestGuacamolePassToFunction(t *testing.T) {
